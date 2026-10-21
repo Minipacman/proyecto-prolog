@@ -9,7 +9,7 @@ HTML_TEMPLATE = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Consulta Académica - ESCOM Prolog</title>
+    <title>Consulta de materias ESCOM</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -19,7 +19,7 @@ HTML_TEMPLATE = """
             padding: 30px 20px;
         }
         .card {
-            max-width: 800px;
+            max-width: 950px;
             margin: 0 auto;
             background: #1e293b;
             border-radius: 12px;
@@ -33,6 +33,12 @@ HTML_TEMPLATE = """
             font-size: 24px;
             border-bottom: 2px solid #334155;
             padding-bottom: 10px;
+        }
+        h3 {
+            font-size: 16px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            padding-left: 8px;
         }
         label {
             font-weight: 600;
@@ -56,11 +62,11 @@ HTML_TEMPLATE = """
             outline: none;
             border-color: #38bdf8;
         }
-        .examples-grid {
+        .grid-section {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
         .example-btn {
             background: #0f172a;
@@ -80,9 +86,11 @@ HTML_TEMPLATE = """
         }
         .example-btn strong {
             display: block;
-            color: #38bdf8;
             margin-bottom: 3px;
         }
+        .badge-regla { color: #f43f5e; border-left: 4px solid #f43f5e; }
+        .badge-predicado { color: #10b981; border-left: 4px solid #10b981; }
+
         button.submit-btn {
             background-color: #0284c7;
             color: white;
@@ -94,6 +102,7 @@ HTML_TEMPLATE = """
             width: 100%;
             font-weight: bold;
             transition: background 0.2s;
+            margin-top: 10px;
         }
         button.submit-btn:hover {
             background-color: #0369a1;
@@ -115,46 +124,74 @@ HTML_TEMPLATE = """
 </head>
 <body>
     <div class="card">
-        <h2>Consultas a `proyecto.pl`</h2>
+        <h2>Consulta de materias ESCOM-IA</h2>
         
-        <label>Haz clic en cualquiera de las 8 consultas configuradas:</label>
-        <div class="examples-grid">
+        <label>Selecciona una regla o predicado para ejecutarla:</label>
+
+        <!-- SECCIÓN DE REGLAS ACADÉMICAS -->
+        <h3 class="badge-regla">⚙️ REGLAS</h3>
+        <div class="grid-section" style="grid-template-columns: 1fr; margin-bottom: 10px;">
             <div class="example-btn" onclick="setQuery('consulta(1, Profe, calculo, Turno)')">
-                <strong>1. Consulta General</strong>
+                <strong style="color:#f43f5e;">Consulta General</strong>
                 <code>consulta(1, Profe, calculo, Turno)</code>
             </div>
-            <div class="example-btn" onclick="setQuery('filtro1_profesor(calculo, P1, P2, Turno)')">
-                <strong>2. Filtrar Profesor</strong>
-                <code>filtro1_profesor(calculo, P1, P2, Turno)</code>
+        </div>
+        <div class="grid-section">
+            <div class="example-btn" onclick="setQuery('filtro1_profesor(calculo, P1, P2, matutino)')">
+                <strong style="color:#f43f5e;">Filtro por profesor</strong>
+                <code>filtro1_profesor(calculo, P1, P2, matutino)</code>
             </div>
             <div class="example-btn" onclick="setQuery('materias_por_semestre(1, M1, M2)')">
-                <strong>3. Materias de cada semestre</strong>
+                <strong style="color:#f43f5e;">Filtro de materias por semestre</strong>
                 <code>materias_por_semestre(1, M1, M2)</code>
             </div>
             <div class="example-btn" onclick="setQuery('materia_ambos_turnos(Materia)')">
-                <strong>4. Materias que se dan en ambos turnos</strong>
+                <strong style="color:#f43f5e;"> Materias que se cursan en ambos turnos</strong>
                 <code>materia_ambos_turnos(Materia)</code>
             </div>
             <div class="example-btn" onclick="setQuery('materia_seriada_1(M1, S1, M2, S2)')">
-                <strong>5. Materias Seriadas</strong>
+                <strong style="color:#f43f5e;">Materias seriadas(1,2)</strong>
                 <code>materia_seriada_1(M1, S1, M2, S2)</code>
             </div>
             <div class="example-btn" onclick="setQuery('mismo_semestre(calculo, M2, 1)')">
-                <strong>6. Materias que se cursan el mismo semestre</strong>
+                <strong style="color:#f43f5e;">Materias que se cursan en el mismo semestre</strong>
                 <code>mismo_semestre(calculo, M2, 1)</code>
             </div>
             <div class="example-btn" onclick="setQuery('filtro_turno(1, P1, P2)')">
-                <strong>7. Porfesores por turno</strong>
+                <strong style="color:#f43f5e;">Filtro de porfesor por turno </strong>
                 <code>filtro_turno(1, P1, P2)</code>
             </div>
+        </div>
+
+        <!-- SECCIÓN DE PREDICADOS -->
+        <h3 class="badge-predicado">📌 Predicados de Listas y Profesores</h3>
+        <div class="grid-section">
             <div class="example-btn" onclick="setQuery('todos_profesores(1, Lista)')">
-                <strong>8. Todos los Profesores</strong>
+                <strong style="color:#10b981;">Lista de todos los profesores</strong>
                 <code>todos_profesores(1, Lista)</code>
+            </div>
+<div class="example-btn" onclick="setQuery(&quot;profesor_materias('MARTINEZ PERALES JOSE CRUZ', Lista)&quot;)">
+                <strong style="color:#10b981;">Materias que imparte un mismo profesor</strong>
+                <code>profesor_materias('MARTINEZ PERALES JOSE CRUZ', Lista)</code>
+            </div>
+            <div class="example-btn" onclick="setQuery('profesor_ambos_turnos(Profe)')">
+                <strong style="color:#10b981;">Porfesor que imparte clases en ambos turnos</strong>
+                <code>profesor_ambos_turnos(Profe)</code>
+            </div>
+            <div class="example-btn" onclick="setQuery('profesor_exclusivo_turno(matutino, Profe)')">
+                <strong style="color:#10b981;">Profesor exclusivo de un turno</strong>
+                <code>profesor_exclusivo_turno(matutino, Profe)</code>
+            </div>
+        </div>
+        <div class="grid-section" style="grid-template-columns: 1fr;">
+            <div class="example-btn" onclick="setQuery('seriacion_avanzada(M1, M2)')">
+                <strong style="color:#10b981;">Seriacion avanzada (A,B,C)</strong>
+                <code>seriacion_avanzada(M1, M2)</code>
             </div>
         </div>
 
         <form id="prologForm">
-            <label for="query">Consulta a ejecutar:</label>
+            <label for="query" style="margin-top: 15px;">Consulta activa a Prolog:</label>
             <input type="text" id="query" name="query" value="consulta(1, Profe, calculo, Turno)" required>
             <button type="submit" class="submit-btn">Ejecutar Consulta</button>
         </form>
@@ -203,7 +240,6 @@ def run_query():
     if user_query.endswith('.'):
         user_query = user_query[:-1]
 
-    # Ejecuta Prolog para obtener todas las combinaciones que cumplan la consulta
     prolog_goal = f"forall({user_query}, (writeln({user_query}))), halt."
 
     cmd = [

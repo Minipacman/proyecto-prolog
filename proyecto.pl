@@ -47,9 +47,13 @@ consulta(2,'ESTRADA ELIZALDE SERAFIN','finanzas empresariales',vespertino).
 consulta(2,'SANTIAGO VALENTIN ERIC','algebra lineal',vespertino).
 consulta(2,'LEON HERNANDEZ MIGUEL ABEL','calculo multivariable',vespertino).
 
+%tercer_semestre_matutino.
+
+%reglas.
+
 %filtro1_profesor.
  %filtro1_profesor(Materia, Profe1,Profe2, Turno).
- filtro1_profesor(Materia, Profe1,profe2, Turno) :-
+ filtro1_profesor(Materia, Profe1,Profe2, Turno) :-
  consulta(_,Profe1, Materia,Turno),
  consulta(_,Profe2,Materia,Turno),
  Profe1 \= Profe2.
@@ -99,8 +103,25 @@ setof(Profe, Turno^Materia^consulta(Semestre,Profe,Materia,Turno),Lista).
 seriacion_avanzada(Materia1, Materia2) :-
  materia_seriada_1(Materia1, Semestre1, Materia2, Semestre2), 
  Semestre1 < Semestre2.
-
 seriacion_avanzada(Materia1,Materia3) :-
  materia_seriada_1(Materia1,_,Materia2,_),
  seriacion_avanzada(Materia2, Materia3).
+
+%profesor_materias(Profe, ListaMaterias).
+    profesor_materias(Profe, Lista) :-
+    setof(Materia, Semestre^Turno^consulta(Semestre, Profe, Materia, Turno), Lista).
+
+%profesor_ambos_turnos(Profe).
+    profesor_ambos_turnos(Profe) :-
+    consulta(_, Profe, _, matutino),
+    consulta(_, Profe, _, vespertino).
+
+%profesor_exclusivo_turno(Turno, Profe).
+    profesor_exclusivo_turno(matutino, Profe) :-
+    consulta(_, Profe, _, matutino),
+    \+ consulta(_, Profe, _, vespertino).
+
+profesor_exclusivo_turno(vespertino, Profe) :-
+    consulta(_, Profe, _, vespertino),
+    \+ consulta(_, Profe, _, matutino). %el\+escomodeciraseguratequeestonosuceda
 
